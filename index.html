@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/style.css" type="text/css">  
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div id="clock">
+  <div id="hora"></div>
+  <div id="minuto"></div>
+  <div id="segundo"></div>
+  <div id="digital-display"></div>
+</div>
+<button id="toggle-button">Mostrar Ponteiros</button>
+
+<script>
+   const relogioDiv = document.getElementById("clock");
+  const ponteiroHora = document.getElementById("hora");
+  const ponteiroMinuto = document.getElementById("minuto");
+  const ponteiroSegundo = document.getElementById("segundo");
+  const displayDigital = document.getElementById("digital-display");
+  const botaoAlternar = document.getElementById("toggle-button");
+
+  let mostrarPonteiros = true;
+
+  function atualizarRelogio() {
+    const agora = new Date();
+    const horas = agora.getHours() % 12;  
+    const minutos = agora.getMinutes();
+    const segundos = agora.getSeconds();
+
+    const grauHora = (360 / 12) * horas + (360 / 12) * (minutos / 60);
+    const grauMinuto = (360 / 60) * minutos + (360 / 60) * (segundos / 60);
+    const grauSegundo = (360 / 60) * segundos;
+
+    if (mostrarPonteiros) {
+      ponteiroHora.style.transform = `rotate(${grauHora}deg)`;
+      ponteiroMinuto.style.transform = `rotate(${grauMinuto}deg)`;
+      ponteiroSegundo.style.transform = `rotate(${grauSegundo}deg)`;
+      ponteiroHora.style.display = "block";
+      ponteiroMinuto.style.display = "block";
+      ponteiroSegundo.style.display = "block";
+      displayDigital.style.display = "none";
+    } else {
+      const horaText = `${horas.toString().padStart(2, "0")}:${minutos.toString().padStart(2, "0")}:${segundos.toString().padStart(2, "0")}`;
+      displayDigital.textContent = horaText;
+      ponteiroHora.style.display = "none";
+      ponteiroMinuto.style.display = "none";
+      ponteiroSegundo.style.display = "none";
+      displayDigital.style.display = "block";
+    }
+  }
+
+  botaoAlternar.addEventListener("click", () => {
+    mostrarPonteiros = !mostrarPonteiros;
+    if (mostrarPonteiros) {
+      botaoAlternar.textContent = "Mostrar Ponteiros";
+    } else {
+      botaoAlternar.textContent = "Mostrar Digital";
+    }
+  });
+
+  setInterval(atualizarRelogio, 1000);  
+  atualizarRelogio();  
+</script>
+</body>
+</html>
