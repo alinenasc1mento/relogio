@@ -1,0 +1,85 @@
+@font-face {
+    font-family: digital-7;
+    src: url('../font/digital-7.ttf') format('truetype');
+}
+
+
+
+
+
+.body {
+    background-image: url('../img/background.png');
+   background-image:no-repeat;
+}
+
+
+
+ 
+
+
+ 
+#digital-display {
+		margin-top:22%;
+		margin-left:16%;
+		font-size:140px;
+		font-family:digital-7;
+		color:#555555;
+}
+
+
+.alarme2{
+	margin-top:1%;
+	margin-left:-3%;
+	
+	
+}
+.alarme{
+	
+	margin-left:23%;
+	font-family:digital-7;
+	
+}
+
+
+
+@media only screen and (min-width:150px) and (max-width:600px)
+{
+	
+* {
+			margin: 0px;
+			padding: 0px;
+		}
+		
+		
+		.body {
+    background-image: url('../img/backgroundpequeno.png');
+		 
+		
+		
+		
+		
+}
+
+#digital-display {
+		margin-top:95%;
+		margin-left:15%;
+		font-size:90px;
+		font-family:digital-7;
+		color:#555555;
+}
+
+.alarme2{
+	text-align:center;
+	margin-left:-45%;
+	margin-top:5%;
+	
+	
+}
+
+.alarme{
+	
+	margin-left:35%;
+ 
+	font-family:digital-7;
+	
+}
