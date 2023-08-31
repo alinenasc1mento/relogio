@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Olha a horaaa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+	   <link rel="icon" href="img/favicon.png">
+</head>
+<body class="body">
+
+<!--<div class="titulo"> Olha a horaaa!!! </div>-->
+
+<div id="digital-display"></div>
+
+<div class="alarme"><label for="horaDespertar"><b>Hora de Despertar:</b></label>
+<div class="alarme2"><input type="time" id="horaDespertar">
+<button id="salvarDespertar">Salvar</button>
+<button id="excluirDespertar">Excluir</button>
+<button id="pararAlarme" style="display: none;">Parar Alarme</button> </div>
+<div id="horaDespertarExibicao"></div> </div>
+
+<script>
+  let alarmeAudio;  
+
+  function atualizarRelogio() {
+    const agora = new Date();
+    const horas = agora.getHours() % 12;
+    const minutos = agora.getMinutes();
+    const segundos = agora.getSeconds();
+
+    const horaText = `${horas.toString().padStart(2, "0")}:${minutos.toString().padStart(2, "0")}:${segundos.toString().padStart(2, "0")}`;
+
+    const displayDigital = document.getElementById("digital-display");
+    displayDigital.textContent = horaText;
+    
+    const horaDespertarInput = document.getElementById("horaDespertar");
+    const horaDespertar = horaDespertarInput.value;
+    
+    if (horaDespertar === horaText) {
+      tocarAlarme();
+    }
+  }
+  
+  function tocarAlarme() {
+    alarmeAudio = new Audio('umafolhaamarela.mp3');
+    alarmeAudio.loop = true; 
+    alarmeAudio.play();
+    
+    
+    document.getElementById("pararAlarme").style.display = "inline-block";
+  }
+
+  function salvarHoraDespertar() {
+    const horaDespertarInput = document.getElementById("horaDespertar");
+    const horaDespertar = horaDespertarInput.value;
+    
+    if (horaDespertar) {
+      localStorage.setItem("horaDespertar", horaDespertar);
+      exibirHoraDespertar(horaDespertar);
+      
+      alert("Hora de despertar salva!");
+      
+      
+      const agora = new Date();
+      const [alarmeHoras, alarmeMinutos] = horaDespertar.split(":");
+      const alarmeData = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), parseInt(alarmeHoras), parseInt(alarmeMinutos), 0);
+      const tempoRestante = alarmeData - agora;
+      
+      if (tempoRestante > 0) {
+        setTimeout(tocarAlarme, tempoRestante);
+      }
+    } else {
+      alert("Por favor, insira uma hora válida.");
+    }
+  }
+
+  function excluirHoraDespertar() {
+    localStorage.removeItem("horaDespertar");
+    document.getElementById("horaDespertar").value = "";
+    document.getElementById("horaDespertarExibicao").textContent = "";  
+    alert("Hora de despertar excluída!");
+  }
+
+  function exibirHoraDespertar(hora) {
+    const horaDespertarExibicao = document.getElementById("horaDespertarExibicao");
+    horaDespertarExibicao.textContent = `Hora de Despertar: ${hora}`;
+  }
+
+  function pararAlarme() {
+    if (alarmeAudio) {
+      alarmeAudio.pause();
+      alarmeAudio.currentTime = 0;
+    }
+    
+    
+    document.getElementById("pararAlarme").style.display = "none";
+  }
+
+  const salvarButton = document.getElementById("salvarDespertar");
+  salvarButton.addEventListener("click", salvarHoraDespertar);
+
+  const excluirButton = document.getElementById("excluirDespertar");
+  excluirButton.addEventListener("click", excluirHoraDespertar);
+
+  const pararAlarmeButton = document.getElementById("pararAlarme");
+  pararAlarmeButton.addEventListener("click", pararAlarme);
+
+  const horaDespertarSalva = localStorage.getItem("horaDespertar");
+  if (horaDespertarSalva) {
+    document.getElementById("horaDespertar").value = horaDespertarSalva;
+    exibirHoraDespertar(horaDespertarSalva);
+  }
+
+  setInterval(atualizarRelogio, 1000);
+  atualizarRelogio();
+</script>
+
+</body>
+</html>
